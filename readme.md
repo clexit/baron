@@ -142,6 +142,12 @@ var params = {
     // Default: 0
     pause: .2,
 
+    // Redefines standard baron resize function
+    // @param {Object} params { scroller: {Object}, size: {String}, was: {String}, will: {String}, baron: {Object} }
+    onResize: function(params) {
+        $(params.scroller).css(params.crossSize, params.will);
+    },
+
     // Local copy of jQuery-like utility
     // Default: window.jQuery
     $: function(selector, context) {

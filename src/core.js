@@ -384,6 +384,7 @@ var
             this.barOnCls = params.barOnCls || '_baron';
             this.scrollingCls = params.scrollingCls;
             this.barTopLimit = 0;
+            this.onResize = params.onResize || null;
             pause = params.pause * 1000 || 0;
 
             // Updating height or width of bar
@@ -521,7 +522,15 @@ var
                             was = $(self.clipper).css(self.origin.crossSize);
                             will = self.clipper[self.origin.crossClient] - delta + 'px';
 
-                            if (was != will) {
+                            if (typeof self.onResize === 'function') {
+                                self.onResize({
+                                    scroller: self.clipper,
+                                    size: self.origin.crossSize,
+                                    was: was,
+                                    will: will,
+                                    baron: self
+                                });
+                            } else if (was != will) {
                                 $(self.clipper).css(self.origin.crossSize, will);
                             }
                         }
@@ -529,7 +538,15 @@ var
                         was = $(self.clipper).css(self.origin.crossSize);
                         will = self.clipper[self.origin.crossClient] + delta + 'px';
 
-                        if (was != will) {
+                        if (typeof self.onResize === 'function') {
+                            self.onResize({
+                                scroller: self.scroller,
+                                size: self.origin.crossSize,
+                                was: was,
+                                will: will,
+                                baron: self
+                            });
+                        } else if (was != will) {
                             $(self.scroller).css(self.origin.crossSize, will);
                         }
                     }
